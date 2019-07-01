@@ -1,0 +1,27 @@
+version: '3.5'
+services:
+    magento:
+        extra_hosts:
+            - "arvi.ch:10.26.19.10"
+    php-fpm:
+        deploy:
+            resources:
+                limits:
+                    memory: 7G
+                    #cpus: "4"
+            #placement:
+                #constraints: [node.labels.php-fpm == true]
+            replicas: 3
+    nginx:
+        image: registry.ciklum.net/arweb/nginx:prod9
+        deploy:
+            labels:
+                traefik.frontend.rule: "Host:${DOMAIN},www.${DOMAIN},webshop.arvi.com,www.webshop.arvi.com,arvi.com,www.arvi.com"
+networks:
+    mysql_webshop-prod:
+        name: mysql_webshop-dev
+        driver: overlay
+        ipam:
+            config:
+                - subnet: 10.43.0.224/27
+

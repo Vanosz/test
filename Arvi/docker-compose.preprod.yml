@@ -1,0 +1,24 @@
+version: '3.5'
+services:
+    php-fpm:
+        deploy:
+            resources:
+                limits:
+                    memory: 10G
+                    #cpus: "4"
+            placement:
+                constraints: [node.labels.php-fpm == true]
+            #replicas: 2
+#    nginx:
+#        image: registry.ciklum.net/arweb/nginx:prod4
+#        deploy:
+#            labels:
+#                traefik.frontend.rule: "Host:${DOMAIN},www.${DOMAIN},webshop.arvi.com,www.webshop.arvi.com,arvi.com,www.arvi.com"
+networks:
+    mysql_webshop-preprod:
+        name: mysql_webshop-preprod
+        driver: overlay
+        ipam:
+            config:
+                - subnet: 10.43.0.192/27
+
